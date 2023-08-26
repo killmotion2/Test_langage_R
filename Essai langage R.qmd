@@ -1,0 +1,63 @@
+# Construction de la relation Force-vitesse pour Xavier Richard au Back squat Barbell
+
+```{r}
+install.packages("tidyverse")
+install.packages("shiny")
+install.packages("ggplot2")
+```
+
+
+```{r}
+install.packages("dplyr")
+```
+
+
+```{r}
+install.packages("ggvis")
+```
+
+
+
+```{r}
+library(tidyverse)
+library(shiny)
+library(palmerpenguins)
+library(dplyr)
+library(ggvis)
+library(ggplot2)
+```
+
+
+```{r}
+# Chercher le fichier et le lire
+lien_raw <- "C:\\Users\\User\\Desktop\\ProfilePuissance Python\\Fichier Tsv Enode\\Enode Xavier Richard.tsv"
+donnees <- read_tsv(lien_raw)
+```
+
+```{r}
+
+donnees <- filter(donnees, User == 'Xavier richard', Exercise == 'Deadlift Hex bar')
+
+# Sélectionner les colonnes pertinentes
+donnees_grouped <- donnees %>%
+  select(`Avg. velocity [m/s]`, `Load [lb]`)
+
+# Calculer la régression linéaire
+lm_model <- lm(`Avg. velocity [m/s]`~`Load [lb]`, data = donnees_grouped)
+
+# Créer graphique avec les données brutes
+graph_points <- donnees_grouped %>%
+  ggvis(x = ~`Avg. velocity [m/s]`, y = ~`Load [lb]`) %>%
+  layer_points() 
+graph_points
+```
+
+
+```{r}
+graph_estimé <- plot(lm_model$model$`Avg. velocity [m/s]`,lm_model$model$`Load [lb]`)
+```
+
+
+
+
+
